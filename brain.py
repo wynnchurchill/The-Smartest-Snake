@@ -22,15 +22,21 @@ class Brain():
         
         # This is all sequential neural network, and IDK what we should do with it. It's here for now.
         # Change to dense layers, instead of convolutional layers
-        self.model.add(Conv2D(32, (3,3), activation = 'relu', input_shape = self.inputShape))
+        # self.model.add(Conv2D(32, (3,3), activation = 'relu', input_shape = self.inputShape))
         
-        self.model.add(MaxPooling2D((2,2)))
+        # self.model.add(MaxPooling2D((2,2)))
         
-        self.model.add(Conv2D(64, (2,2), activation = 'relu'))
+        # self.model.add(Conv2D(64, (2,2), activation = 'relu'))
         
-        self.model.add(Flatten())
+        # self.model.add(Flatten())
         
-        self.model.add(Dense(units = 256, activation = 'relu'))
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu', input_dim=48))
+
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
+
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
+
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
         
         self.model.add(Dense(units = self.numOutputs))
         

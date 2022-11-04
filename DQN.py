@@ -40,6 +40,3 @@ class Dqn(object):
             else:
                 targets[i, action] = reward + self.discount * Q_sa
         return inputs, targets
-
-
-   

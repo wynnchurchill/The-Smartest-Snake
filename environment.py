@@ -201,9 +201,10 @@ class Environment():
 
     # looks in one line of sight, returning a list of 3 distances
     def look(self, x, y, x_step, y_step):
-        results = [] * 3
+        results = [0,0,0]
         n_steps = 0
         while True:
+
             try:
                 x += x_step
                 y += y_step
@@ -221,6 +222,7 @@ class Environment():
             # the outside of the map has been found
             except IndexError:
                 results[0] = n_steps + 1
+                break
 
         return results
 
@@ -228,15 +230,16 @@ class Environment():
     def getVision(self):
 
         # the position of the head of the snake
-        snake_x = self.snakePos[0][1]
-        snake_y = self.snakePos[0][0]
+        snake_x = self.snakePos[0][0]
+        snake_y = self.snakePos[0][1]
 
         # the tuples of steps comprising the 16 directions
         directions = [(1,0), (2,1), (1,1), (1,2), (0,1), (-1,2), (-1,1), (-2,1), (-1,0), (-2,-1), (-1,-1), (-1,-2), (0,-1), (1,-2), (1,-1), (2,-1)]
         vision = []
 
         # look in all directions, appending the results to vision
-        for x_step, y_step in direction:
+        for x_step, y_step in directions:
+ 
             vision += self.look(snake_x, snake_y, x_step, y_step)
 
         # vision is a list containg 48 distances, in the order "outside, body, food, outside, body, food, etc."

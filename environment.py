@@ -199,6 +199,34 @@ class Environment():
         
         self.lastMove = 0
 
+    # looks in 16 directions, returning a list of 48 distances
+    def getVision(self, x, y, x_step, y_step):
+
+        # first 16 values are the distance to the wall in each direction
+        # the following 16 values are the distance to the snake in each direction
+        # the final 16 values are the distance to the apple in each direction
+        vision = [] * 48
+
+        for line_of_sight in range(16):
+            n_steps = 0
+            while True:
+                try:
+                    landing_square_val = self.screenMap[x + x_step][y + y_step]
+                    n_steps += 1
+
+                    # snake bod has been found (only the first snake body piece is counted)
+                    if landing_square_val == 0.5 and vision[line_of_sight + 16] == 0:
+                        vision[line_of_sight + 16] = n_steps
+
+                    # food has been found
+                    if landing_square_val == 1:
+                        vision[line_of_sight + 32] = n_steps
+
+                # the outside of the map has been found
+                except IndexError:
+                    vision[line_of_sight] = n_steps + 1
+
+
 # Additional code, actually not mentioned in the book, simply enables you to play the game on your own if you run this "environment.py" file. 
 # We don't really need it, that's why it was not mentioned. 
 if __name__ == '__main__':        

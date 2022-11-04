@@ -12,7 +12,7 @@ from keras.optimizers import Adam
 class Brain():
     
     # Change the shape of the input to match the 48, 16 directions, three pieces of information for each direction
-    def __init__(self, iS = (100,100,3), lr = 0.0005):
+    def __init__(self, input_dims = 48, lr = 0.0005):
         
         self.learningRate = lr
         self.inputShape = iS
@@ -30,7 +30,7 @@ class Brain():
         
         # self.model.add(Flatten())
         
-        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu', input_dim=48))
+        self.model.add(Dense(units = 48, kernel_initializer='random_uniform', activation = 'relu', input_dim=input_dims))
 
         self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
 

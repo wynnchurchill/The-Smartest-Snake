@@ -199,32 +199,49 @@ class Environment():
         
         self.lastMove = 0
 
+    # looks in one line of sight, returning a list of 3 distances
+    def look(self, x, y, x_step, y_step):
+        results = [] * 3
+        n_steps = 0
+        while True:
+            try:
+                x += x_step
+                y += y_step
+                landing_square_val = self.screenMap[x][y]
+                n_steps += 1
+
+                # snake bod has been found (only the first snake body piece is counted)
+                if landing_square_val == 0.5 and results[1] == 0:
+                    results[1] = n_steps
+
+                # food has been found
+                if landing_square_val == 1:
+                    results[2] = n_steps
+
+            # the outside of the map has been found
+            except IndexError:
+                results[0] = n_steps + 1
+
+        return results
+
     # looks in 16 directions, returning a list of 48 distances
-    def getVision(self, x, y, x_step, y_step):
+    def getVision(self):
 
-        # first 16 values are the distance to the wall in each direction
-        # the following 16 values are the distance to the snake in each direction
-        # the final 16 values are the distance to the apple in each direction
-        vision = [] * 48
+        # the position of the head of the snake
+        snake_x = self.snakePos[0][1]
+        snake_y = self.snakePos[0][0]
 
-        for line_of_sight in range(16):
-            n_steps = 0
-            while True:
-                try:
-                    landing_square_val = self.screenMap[x + x_step][y + y_step]
-                    n_steps += 1
+        # the tuples of steps comprising the 16 directions
+        directions = [(1,0), (2,1), (1,1), (1,2), (0,1), (-1,2), (-1,1), (-2,1), (-1,0), (-2,-1), (-1,-1), (-1,-2), (0,-1), (1,-2), (1,-1), (2,-1)]
+        vision = []
 
-                    # snake bod has been found (only the first snake body piece is counted)
-                    if landing_square_val == 0.5 and vision[line_of_sight + 16] == 0:
-                        vision[line_of_sight + 16] = n_steps
+        # look in all directions, appending the results to vision
+        for x_step, y_step in direction:
+            vision += self.look(snake_x, snake_y, x_step, y_step)
 
-                    # food has been found
-                    if landing_square_val == 1:
-                        vision[line_of_sight + 32] = n_steps
-
-                # the outside of the map has been found
-                except IndexError:
-                    vision[line_of_sight] = n_steps + 1
+        # vision is a list containg 48 distances, in the order "outside, body, food, outside, body, food, etc."
+        return vision
+    
 
 
 # Additional code, actually not mentioned in the book, simply enables you to play the game on your own if you run this "environment.py" file. 

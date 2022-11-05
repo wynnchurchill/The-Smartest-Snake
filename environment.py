@@ -61,13 +61,18 @@ class Environment():
         
         cellWidth = self.width / self.nColumns
         cellHeight = self.height / self.nRows
+
         
         for i in range(self.nRows):
             for j in range(self.nColumns):
-                if self.screenMap[i][j] == 0.5:
+                if self.screenMap[i][j] == 0.5 and self.snakePos[0] == (i,j):
+                    pg.draw.rect(self.screen, (0, 255, 0), (j*cellWidth + 1, i*cellHeight + 1, cellWidth - 2, cellHeight - 2))
+                elif self.screenMap[i][j] == 0.5:
                     pg.draw.rect(self.screen, (255, 255, 255), (j*cellWidth + 1, i*cellHeight + 1, cellWidth - 2, cellHeight - 2))
                 elif self.screenMap[i][j] == 1:
                     pg.draw.rect(self.screen, (255, 0, 0), (j*cellWidth + 1, i*cellHeight + 1, cellWidth - 2, cellHeight - 2))
+                else:
+                    pg.draw.rect(self.screen, (30, 30, 30), (j*cellWidth + 1, i*cellHeight + 1, cellWidth - 2, cellHeight - 2))
                     
         pg.display.flip()
     
@@ -211,6 +216,10 @@ class Environment():
                 landing_square_val = self.screenMap[x][y]
                 n_steps += 1
 
+                if x < 0 or y < 0:
+                    results[0] = n_steps
+                    break
+
                 # snake bod has been found (only the first snake body piece is counted)
                 if landing_square_val == 0.5 and results[1] == 0:
                     results[1] = n_steps
@@ -233,8 +242,9 @@ class Environment():
         snake_x = self.snakePos[0][0]
         snake_y = self.snakePos[0][1]
 
+
         # the tuples of steps comprising the 16 directions
-        directions = [(1,0), (2,1), (1,1), (1,2), (0,1), (-1,2), (-1,1), (-2,1), (-1,0), (-2,-1), (-1,-1), (-1,-2), (0,-1), (1,-2), (1,-1), (2,-1)]
+        directions = [(-1,-1), (-1,-2), (0,-1), (1,-2), (1,-1), (2,-1), (1,0), (2,1), (1,1), (1,2), (0,1), (-1,2), (-1,1), (-2,1), (-1,0), (-2,-1)]
         vision = []
 
         # look in all directions, appending the results to vision
@@ -244,7 +254,44 @@ class Environment():
 
         # vision is a list containg 48 distances, in the order "outside, body, food, outside, body, food, etc."
         return vision
+
+    def printCube(self, a):
+        m = [
+            [a[0], a[15], a[14], a[13], a[12]],
+            [a[1], " ", " ", " ", a[11]],
+            [a[2], " ", "🐍", " ", a[10]],
+            [a[3], " ", " ", " ", a[9]],
+            [a[4], a[5], a[6], a[7], a[8]]]
+
+        # print the items in columns with a minimun width of 3
+        for row in m:
+            print(" ".join("{:<4}".format(item) for item in row))
     
+    def printVision(self):
+        vision = self.getVision()
+
+        edge_vision = []
+        body_vision = []
+        food_vision = []
+
+        # gets every third element of the list
+        for element in vision[::3]:
+            edge_vision.append(element)
+        # gets every third element of the list, starting with the second element
+        for element in vision[1::3]:
+            body_vision.append(element)
+        # gets every third element of the list, starting with the third element
+        for element in vision[2::3]:
+            food_vision.append(element)
+
+        # prints the 16 elements in a ring, starting with the top left corner
+        print("\nEdge vision:")
+        self.printCube(edge_vision)
+        print("\nBody vision:")
+        self.printCube(body_vision)
+        print("\nFood vision:")
+        self.printCube(food_vision)
+
 
 
 # Additional code, actually not mentioned in the book, simply enables you to play the game on your own if you run this "environment.py" file. 

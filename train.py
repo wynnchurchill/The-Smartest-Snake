@@ -7,6 +7,7 @@ from brain import Brain
 from DQN import Dqn
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # Defining the parameters
 memSize = 60000
@@ -62,31 +63,10 @@ while True:
         # Updating the environment
         state, reward, gameOver = env.step(action)
 
- 
         vision = env.getVision()
-        edge_vision = []
-        body_vision = []
-        food_vision = []
+        env.printVision()
 
-        # gets every third element of the list
-        for element in vision[::3]:
-            edge_vision.append(element)
-        # gets every third element of the list, starting with the second element
-        for element in vision[1::3]:
-            body_vision.append(element)
-        # gets every third element of the list, starting with the third element
-        for element in vision[2::3]:
-            food_vision.append(element)
-
-        # prints the 16 elements in a ring, starting with the top left corner
-        for i in range(5):
-            print(edge_vision[i], end=' ')
-        print("\n", edge_vision[5], " ", " ", " ", edge_vision[6])
-        print("\n", edge_vision[7], " ", " ", " ", edge_vision[8])
-        print("\n", edge_vision[9], " ", " ", " ", edge_vision[10], "\n")
-        for i in range(11, 16):
-            print(edge_vision[i], end=' ')
-
+        nothing = input("Press enter to continue")
         
         # Adding new game frame to the next state and deleting the oldest frame from next state
         state = np.reshape(state, (1, env.nRows, env.nColumns, 1))

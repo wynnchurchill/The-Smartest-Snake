@@ -27,8 +27,15 @@ class Brain():
         
         self.model.add(Flatten())
         
+<<<<<<< Updated upstream
         self.model.add(Dense(units = 256, activation = 'relu'))
         
+=======
+        self.model.add(Dense(units = 48, kernel_initializer='random_uniform', activation = 'relu', input_dim=input_dims))
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
+        self.model.add(Dense(units = 64, kernel_initializer='random_uniform', activation = 'relu'))
+>>>>>>> Stashed changes
         self.model.add(Dense(units = self.numOutputs))
         
         # Compiling the model

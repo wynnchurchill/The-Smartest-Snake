@@ -7,6 +7,7 @@ from brain import Brain
 from DQN import Dqn
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # Defining the parameters
 memSize = 60000
@@ -68,6 +69,11 @@ while True:
         
         # Updating the environment
         state, reward, gameOver = env.step(action)
+
+        vision = env.getVision()
+        env.printVision()
+
+        nothing = input("Press enter to continue")
         
         # Adding new game frame to the next state and deleting the oldest frame from next state
         state = np.reshape(state, (1, env.nRows, env.nColumns, 1))

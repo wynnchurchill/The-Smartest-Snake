@@ -5,6 +5,8 @@
 import numpy as np
 import pygame as pg
 
+import config as cfg
+
 # Initializing the Environment class
 class Environment():
     
@@ -20,6 +22,9 @@ class Environment():
         self.negReward = -1.        # reward for dying
         self.posReward = 2.         # reward for collecting an apple
         self.waitTime = waitTime    # slowdown after taking an action
+        self.snakeMoves = 0         # number of moves snake makes in lifetime
+        self.snakeScore = 0         # total apples collected by snake
+        self.snakeFitness = 0       # snake's calculated fitness
         
         if self.initSnakeLen > self.nRows / 2:
             self.initSnakeLen = int(self.nRows / 2)
@@ -198,6 +203,20 @@ class Environment():
         self.screenMap[self.applePos[0]][self.applePos[1]] = 1
         
         self.lastMove = 0
+
+    # code from https://github.com/KacperMayday/Snake-Genetic-Algorithm/blob/master/main.py
+    def run_generation():
+        """Runs all individuals in the population.
+        Returns
+        -------
+        score_array : list
+            list of scores achieved by each neural network in generation.
+        """
+        score_array = []
+        #TODO: Complete this function so that it runs a certain number of snakes
+        # and returns a list of their scores
+
+        return score_array
 
 # Additional code, actually not mentioned in the book, simply enables you to play the game on your own if you run this "environment.py" file. 
 # We don't really need it, that's why it was not mentioned. 

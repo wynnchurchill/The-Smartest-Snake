@@ -5,6 +5,8 @@
 import numpy as np
 import pygame as pg
 
+import config as cfg
+
 # Initializing the Environment class
 class Environment():
     
@@ -20,6 +22,9 @@ class Environment():
         self.negReward = -1.        # reward for dying
         self.posReward = 2.         # reward for collecting an apple
         self.waitTime = waitTime    # slowdown after taking an action
+        self.snakeMoves = 0         # number of moves snake makes in lifetime
+        self.snakeScore = 0         # total apples collected by snake
+        self.snakeFitness = 0       # snake's calculated fitness
         
         if self.initSnakeLen > self.nRows / 2:
             self.initSnakeLen = int(self.nRows / 2)
@@ -204,6 +209,21 @@ class Environment():
         
         self.lastMove = 0
 
+
+    # code from https://github.com/KacperMayday/Snake-Genetic-Algorithm/blob/master/main.py
+    def run_generation():
+        """Runs all individuals in the population.
+        Returns
+        -------
+        score_array : list
+            list of scores achieved by each neural network in generation.
+        """
+        score_array = []
+        #TODO: Complete this function so that it runs a certain number of snakes
+        # and returns a list of their scores
+
+        return score_array
+
     # looks in one line of sight, returning a list of 3 distances
     def look(self, x, y, x_step, y_step):
         results = [0,0,0]
@@ -291,6 +311,7 @@ class Environment():
         self.printCube(body_vision)
         print("\nFood vision:")
         self.printCube(food_vision)
+
 
 
 

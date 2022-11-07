@@ -37,6 +37,13 @@ def resetStates():
     
     return currentState, currentState
 
+# code from https://github.com/Chrispresso/SnakeAI/blob/master/snake.py
+def calculate_fitness(env):
+    # Give positive minimum fitness for roulette wheel selection
+    env.snakeFitness = (env.snakeMoves) + ((2**env.snakeScore) + (env.snakeScore**2.1)*500) - (((.25 * env.snakeMoves)**1.3) * (env.snakeScore**1.2))
+    env.snakeFitness = max(env.snakeFitness, .1)
+
+
 # Starting the main loop
 epoch = 0
 scores = list()

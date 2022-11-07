@@ -169,7 +169,7 @@ def mating():
         second.load_state_dict(torch.load('data/{}.pt'.format(it + 1)))
         counter = breeding(first, second, counter)
 
-
+# Here's a network that we could potentially use
 class Brain(nn.Module):
     """Neural Network class to control snake movement.
     Attributes

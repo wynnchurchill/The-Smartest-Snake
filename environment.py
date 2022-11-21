@@ -18,9 +18,6 @@ class Environment():
         self.nRows = 20             # number of rows in our board
         self.nColumns = 20          # number of columns in our board
         self.initSnakeLen = 2       # initial length of the snake
-        self.defReward = -0.03      # reward for taking an action - The Living Penalty
-        self.negReward = -1.        # reward for dying
-        self.posReward = 2.         # reward for collecting an apple
         self.waitTime = waitTime    # slowdown after taking an action
         self.snakeMoves = 0         # number of moves snake makes in lifetime
         self.snakeScore = 0         # total apples collected by snake
@@ -107,9 +104,8 @@ class Environment():
         # action = 2 -> right
         # action = 3 -> left
         
-        # Resetting these parameters and setting the reward to the living penalty
+        # Resetting these parameters
         gameOver = False
-        reward = self.defReward
         self.collected = False
         
         for event in pg.event.get():
@@ -134,67 +130,54 @@ class Environment():
             if snakeY > 0:
                 if self.screenMap[snakeY - 1][snakeX] == 0.5:
                     gameOver = True
-                    reward = self.negReward
                 elif self.screenMap[snakeY - 1][snakeX] == 1:
-                    reward = self.posReward
                     self.moveSnake((snakeY - 1, snakeX), True)
                 elif self.screenMap[snakeY - 1][snakeX] == 0:
                     self.moveSnake((snakeY - 1, snakeX), False)
             else:
                 gameOver = True
-                reward = self.negReward
                 
         elif action == 1:
             if snakeY < self.nRows - 1:
                 if self.screenMap[snakeY + 1][snakeX] == 0.5:
                     gameOver = True
-                    reward = self.negReward
                 elif self.screenMap[snakeY + 1][snakeX] == 1:
-                    reward = self.posReward
                     self.moveSnake((snakeY + 1, snakeX), True)
                 elif self.screenMap[snakeY + 1][snakeX] == 0:
                     self.moveSnake((snakeY + 1, snakeX), False)
             else:
                 gameOver = True
-                reward = self.negReward
                 
         elif action == 2:
             if snakeX < self.nColumns - 1:
                 if self.screenMap[snakeY][snakeX + 1] == 0.5:
                     gameOver = True
-                    reward = self.negReward
                 elif self.screenMap[snakeY][snakeX + 1] == 1:
-                    reward = self.posReward
                     self.moveSnake((snakeY, snakeX + 1), True)
                 elif self.screenMap[snakeY][snakeX + 1] == 0:
                     self.moveSnake((snakeY, snakeX + 1), False)
             else:
                 gameOver = True
-                reward = self.negReward 
         
         elif action == 3:
             if snakeX > 0:
                 if self.screenMap[snakeY][snakeX - 1] == 0.5:
                     gameOver = True
-                    reward = self.negReward
                 elif self.screenMap[snakeY][snakeX - 1] == 1:
-                    reward = self.posReward
                     self.moveSnake((snakeY, snakeX - 1), True)
                 elif self.screenMap[snakeY][snakeX - 1] == 0:
                     self.moveSnake((snakeY, snakeX - 1), False)
             else:
                 gameOver = True
-                reward = self.negReward
         
         # Drawing the screen, updating last move and waiting the wait time specified
         self.drawScreen()
-        
         self.lastMove = action
         
         pg.time.wait(self.waitTime)
         
-        # Returning the new frame of the game, the reward obtained and whether the game has ended or not
-        return self.screenMap, reward, gameOver
+        # Returning the new frame of the game and whether the game has ended or not
+        return self.getVision(), gameOver
     
     # Making a function that resets the environment
     def reset(self):
@@ -322,7 +305,6 @@ if __name__ == '__main__':
     start = False
     direction = 0
     gameOver = False
-    reward = 0
     while True:
         state = env.screenMap
         pos = env.snakePos
@@ -343,7 +325,7 @@ if __name__ == '__main__':
                     direction = 1
         
         if start:
-            _, reward, gameOver = env.step(direction)
+            _, gameOver = env.step(direction)
         if gameOver:
             env.reset()
             direction = 0

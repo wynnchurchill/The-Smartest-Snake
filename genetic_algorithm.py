@@ -193,11 +193,16 @@ class Brain(nn.Module):
     def __init__(self):
         super(Brain, self).__init__()
 
-        self.in_nodes = 8
-        # self.hidden_nodes = 8
+        self.in_nodes = 48
+        self.hidden_nodes1 = 36
+        self.hidden_nodes2 = 28
         self.out_nodes = 4
         
-        self.net = nn.Sequential(nn.Linear(self.in_nodes, self.out_nodes),
+        self.net = nn.Sequential(nn.Linear(self.in_nodes, self.hidden_nodes1),
+                                 nn.ReLU(),
+                                 nn.Linear(self.hidden_nodes1, self.hidden_nodes2),
+                                 nn.ReLU(),
+                                 nn.Linear(self.hidden_nodes2, self.out_nodes),
                                  nn.Sigmoid())
 
     def forward(self, inputs):
